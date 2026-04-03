@@ -306,7 +306,7 @@ function generateImage() {
   const encoded = encodeURIComponent(prompt);
 
   // referrer = tu usuario de Pollinations → te da Polen por cada imagen 🌸
-  const url = `https://image.pollinations.ai/prompt/${encoded}?width=512&height=512&seed=${seed}&model=flux&referrer=${POLLINATIONS_USER}`;
+  const url = `https://image.pollinations.ai/prompt/${encoded}?width=512&height=512&seed=${seed}&model=flux-schnell&referrer=${POLLINATIONS_USER}`;
 
   document.getElementById('resultArea').classList.add('show');
   document.getElementById('loadingOverlay').classList.remove('hidden');
