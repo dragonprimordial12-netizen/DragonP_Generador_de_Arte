@@ -72,6 +72,21 @@
   .sug-tag { font-size:0.62rem; letter-spacing:0.15em; text-transform:uppercase; padding:0.35rem 0.9rem; border:1px solid rgba(255,140,0,0.2); color:rgba(255,140,0,0.6); cursor:pointer; transition:all 0.2s; clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%); }
   .sug-tag:hover { background:rgba(255,100,0,0.1); border-color:var(--ember); color:var(--gold); }
 
+  /* QUALITY SELECTOR */
+  .quality-row { display:flex; align-items:center; gap:0.7rem; flex-wrap:wrap; margin-bottom:1.5rem; }
+  .quality-label { font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,140,0,0.5); white-space:nowrap; }
+  .quality-btn { position:relative; display:flex; flex-direction:column; align-items:flex-start; gap:0.15rem;
+    font-family:'Cinzel',serif; font-size:0.7rem; letter-spacing:0.12em; text-transform:uppercase;
+    padding:0.55rem 1.1rem; background:rgba(5,3,5,0.7); border:1px solid rgba(255,140,0,0.18);
+    color:rgba(255,140,0,0.5); cursor:pointer; transition:all 0.22s;
+    clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%); }
+  .quality-btn:hover { border-color:rgba(255,140,0,0.45); color:var(--ember); background:rgba(255,80,0,0.07); }
+  .quality-btn.active { border-color:var(--ember); color:var(--gold); background:rgba(255,100,0,0.12);
+    box-shadow:0 0 18px rgba(255,100,0,0.2); }
+  .quality-hint { font-size:0.52rem; letter-spacing:0.08em; text-transform:none; font-family:'IM Fell English',serif;
+    font-style:italic; color:rgba(255,180,80,0.45); margin-top:0.05rem; line-height:1; }
+  .quality-btn.active .quality-hint { color:rgba(255,200,100,0.65); }
+
   /* RESULT */
   .result-area { margin-top:2rem; display:none; }
   .result-area.show { display:block; }
@@ -153,7 +168,7 @@
 <div class="hero">
   <p class="eyebrow">Dragón Primordial · Arte con IA · Generador Gratis</p>
   <h1>🔥 Generador de Arte</h1>
-  <p class="hero-sub">Ezcribe cualquier idea y la magia hará el rezte ✨</p>
+  <p class="hero-sub">Escribe cualquier idea y la magia hará el resto ✨</p>
 </div>
 
 <!-- REDES SOCIALES -->
@@ -171,11 +186,11 @@
 <div class="live-bar">
   <div class="live-item">
     <div class="live-dot"></div>
-    <span><span class="live-count" id="usersOnline">1</span> perzona(z) en la página</span>
+    <span><span class="live-count" id="usersOnline">1</span> persona(s) en la página</span>
   </div>
   <div class="live-item">
     <div class="live-dot red"></div>
-    <span><span class="live-gen-count" id="genCount">0</span> imágenez generadaz hoy</span>
+    <span><span class="live-gen-count" id="genCount">0</span> imágenes generadas hoy</span>
   </div>
   <div class="live-item" style="color:rgba(255,140,0,0.35);font-size:0.6rem;">
     ✦ Powered by Pollinations AI — 100% Gratis
@@ -188,7 +203,21 @@
 
   <!-- GENERATOR -->
   <div class="gen-box reveal">
-    <div class="gen-title">✏️ Ezcribe tu idea y genera tu imagen</div>
+    <div class="gen-title">✏️ Escribe tu idea y genera tu imagen</div>
+
+    <!-- SELECTOR DE CALIDAD -->
+    <div class="quality-row">
+      <span class="quality-label">⚙️ Calidad:</span>
+      <button class="quality-btn active" id="qFast" onclick="setQuality('fast')">
+        ⚡ Rápido
+        <span class="quality-hint">3–5 seg · buena calidad</span>
+      </button>
+      <button class="quality-btn" id="qHigh" onclick="setQuality('high')">
+        🎨 Alta Calidad
+        <span class="quality-hint">20–30 seg · máxima calidad</span>
+      </button>
+    </div>
+
     <div class="input-row">
       <input class="prompt-input" id="promptInput" type="text"
         placeholder="ej: dragón de fuego primordial..." maxlength="200">
@@ -240,15 +269,15 @@
 
   <!-- RECIENTES -->
   <div class="reveal">
-    <div class="recent-title">🕰️ Generacionez Recientez (ezta zezión)</div>
+    <div class="recent-title">🕰️ Generaciones Recientes (esta sesión)</div>
     <div class="recent-grid" id="recentGrid">
-      <div class="no-recent">Todavía no hay imágenez... ¡genera la primera! 🔥</div>
+      <div class="no-recent">Todavía no hay imágenes... ¡genera la primera! 🔥</div>
     </div>
   </div>
 
   <!-- USUARIOS -->
   <div class="users-section reveal">
-    <div class="users-title"><div class="live-dot"></div>Perzonaz en la página ahora</div>
+    <div class="users-title"><div class="live-dot"></div>Personas en la página ahora</div>
     <div class="users-list" id="usersList"></div>
   </div>
 
@@ -276,6 +305,14 @@
 //  página te suma Polen a ti 🌸
 // ════════════════════════════════════════════
 const POLLINATIONS_USER = 'dragonprimordial12-netizen';
+
+let currentQuality = 'fast'; // 'fast' = flux-schnell (3-5s) | 'high' = flux (20-30s)
+
+function setQuality(q) {
+  currentQuality = q;
+  document.getElementById('qFast').classList.toggle('active', q === 'fast');
+  document.getElementById('qHigh').classList.toggle('active', q === 'high');
+}
 
 const FAKE_USERS = [
   "dragonfire22","luna_kawaii","wolfshadow_x","artlover99","dragon_fan01",
@@ -306,7 +343,8 @@ function generateImage() {
   const encoded = encodeURIComponent(prompt);
 
   // referrer = tu usuario de Pollinations → te da Polen por cada imagen 🌸
-  const url = `https://image.pollinations.ai/prompt/${encoded}?width=512&height=512&seed=${seed}&model=flux-schnell&referrer=${POLLINATIONS_USER}`;
+  const model = currentQuality === 'high' ? 'flux' : 'flux-schnell';
+  const url = `https://image.pollinations.ai/prompt/${encoded}?width=512&height=512&seed=${seed}&model=${model}&referrer=${POLLINATIONS_USER}`;
 
   document.getElementById('resultArea').classList.add('show');
   document.getElementById('loadingOverlay').classList.remove('hidden');
@@ -316,12 +354,12 @@ function generateImage() {
   document.getElementById('downloadBtn').href = '#';
 
   document.getElementById('resultMeta').innerHTML = `
-    <div class="result-meta-row"><span class="label">Eztilo</span>${style || 'Normal'}</div>
-    <div class="result-meta-row"><span class="label">Zeilla</span>${seed}</div>
-    <div class="result-meta-row"><span class="label">Eztado</span><span style="color:var(--teal)">⏳ Generando...</span></div>
+    <div class="result-meta-row"><span class="label">Estilo</span>${style || 'Normal'}</div>
+    <div class="result-meta-row"><span class="label">Semilla</span>${seed}</div>
+    <div class="result-meta-row"><span class="label">Estado</span><span style="color:var(--teal)">⏳ Generando...</span></div>
   `;
 
-  const msgs = ['Invocando dragones...','Mezclando colorez...','Dando vida al arte...','Cazí listo...','Un momento máz...'];
+  const msgs = ['Invocando dragones...','Mezclando colores...','Dando vida al arte...','Casi listo...','Un momento más...'];
   let mi = 0;
   const lt = document.getElementById('loadingText');
   lt.textContent = msgs[mi];
@@ -336,9 +374,9 @@ function generateImage() {
     document.getElementById('genBtn').disabled = false;
     document.getElementById('downloadBtn').href = url;
     document.getElementById('resultMeta').innerHTML = `
-      <div class="result-meta-row"><span class="label">Eztilo</span>${style || 'Normal'}</div>
-      <div class="result-meta-row"><span class="label">Zeilla</span>${seed}</div>
-      <div class="result-meta-row"><span class="label">Eztado</span><span style="color:var(--teal)">✔ Listo!</span></div>
+      <div class="result-meta-row"><span class="label">Estilo</span>${style || 'Normal'}</div>
+      <div class="result-meta-row"><span class="label">Semilla</span>${seed}</div>
+      <div class="result-meta-row"><span class="label">Estado</span><span style="color:var(--teal)">✔ Listo!</span></div>
     `;
     genCount++;
     localStorage.setItem('dp_genCount', genCount);
@@ -350,7 +388,7 @@ function generateImage() {
   };
   img.onerror = () => {
     clearInterval(iv);
-    document.getElementById("loadingOverlay").innerHTML = `<div style="text-align:center;padding:1rem"><span style="color:#ff9999;font-size:0.75rem;letter-spacing:0.1em;display:block;margin-bottom:0.8rem;">⚠ Error al generar</span><span style="color:#a08060;font-size:0.65rem;letter-spacing:0.1em;">Pollinations eztá ocupado.<br>Intenta de nuevo en unoz zegundoz.</span></div>`;
+    document.getElementById("loadingOverlay").innerHTML = `<div style="text-align:center;padding:1rem"><span style="color:#ff9999;font-size:0.75rem;letter-spacing:0.1em;display:block;margin-bottom:0.8rem;">⚠ Error al generar</span><span style="color:#a08060;font-size:0.65rem;letter-spacing:0.1em;">Pollinations está ocupado.<br>Intenta de nuevo en unos segundos.</span></div>`;
     document.getElementById("genBtn").disabled = false;
     setTimeout(() => { document.getElementById("loadingOverlay").classList.add("hidden"); }, 5000);
   };
@@ -362,7 +400,7 @@ function shakeInput() { const i=document.getElementById('promptInput'); i.style.
 
 function renderRecentGrid() {
   const g = document.getElementById('recentGrid');
-  if (!recentImgs.length) { g.innerHTML='<div class="no-recent">Todavía no hay imágenez... ¡genera la primera! 🔥</div>'; return; }
+  if (!recentImgs.length) { g.innerHTML='<div class="no-recent">Todavía no hay imágenes... ¡genera la primera! 🔥</div>'; return; }
   g.innerHTML = recentImgs.map(r=>`
     <div class="recent-card" onclick="openLightbox('${r.url}')">
       <img src="${r.url}" alt="${r.prompt}" loading="lazy">
