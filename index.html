@@ -4,8 +4,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🔥 Generador de Arte 🔥 · Dragón Primordial</title>
+<title>🔥 Generador de Arte IA · Dragón Primordial</title>
 <meta name="description" content="Generador de arte con IA de Dragón Primordial. Escribe cualquier idea y crea tu imagen gratis.">
+<meta property="og:title" content="🔥 Generador de Arte IA · Dragón Primordial">
+<meta property="og:description" content="Crea arte épico con IA gratis. Powered by Pollinations AI.">
+<meta property="og:image" content="https://image.pollinations.ai/prompt/dragon%20primordial%20fire%20epic%20fantasy%20art?width=1200&height=630&model=flux">
+<meta name="referrer" content="no-referrer">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -233,13 +237,16 @@
 
 <!-- REDES SOCIALES -->
 <div class="social-bar">
+  <a class="social-link" href="https://dragonprimordial12-netizen.github.io/DragonP_BESTIAS_Y_MONSTRUOS/" target="_blank">🐲 B&M</a>
+  <a class="social-link" href="https://dragonprimordial12-netizen.github.io/DragonP_Enciclopedia_de_Bestias/" target="_blank">📖 Enciclopedia</a>
+  <a class="social-link" href="https://dragonprimordial12-netizen.github.io/DragonP_El_Arte_del_Ajedrez/" target="_blank">♟ Ajedrez</a>
+  <a class="social-link" href="https://dragonprimordial12-netizen.github.io/DragonP_Galeria_de_Dibujos/" target="_blank">🖼 Galería</a>
+  <a class="social-link" href="https://dragonprimordial12-netizen.github.io/DragonP_Oraculo_de_la_Era_Salvaje/" target="_blank">🔮 Oráculo IA</a>
   <a class="social-link" href="https://www.tiktok.com/@dragonprimordial?lang=es" target="_blank">🎵 TikTok</a>
   <a class="social-link" href="https://x.com/dragonprimordia" target="_blank">𝕏 Twitter</a>
   <a class="social-link" href="https://www.instagram.com/dragonprimordial/" target="_blank">📸 Instagram</a>
-  <a class="social-link" href="https://www.threads.com/@dragonprimordial" target="_blank">🧵 Threads</a>
-  <a class="social-link" href="https://www.facebook.com/profile.php?id=61575355656190" target="_blank">📘 Facebook</a>
-  <a class="social-link" href="https://discord.com/channels/1489401096530301128/1489401098518139032" target="_blank">💬 Discord</a>
   <a class="social-link" href="https://www.youtube.com/@Drag%C3%B3nPrimordial" target="_blank">▶️ YouTube</a>
+  <a class="social-link" href="https://www.roblox.com/es/games/103451711855402/BESTIAS-Y-MONSTRUOS" target="_blank">🎮 Roblox</a>
 </div>
 
 <!-- LIVE BAR -->
@@ -479,7 +486,7 @@ function buildUrl(prompt, seed) {
   const sizeVal = document.getElementById('sizeSelect').value;
   const [w, h] = sizeVal.split('x');
   const model = currentQuality === 'high' ? 'flux' : 'flux-schnell';
-  return `https://image.pollinations.ai/prompt/${encoded}?width=${w}&height=${h}&seed=${seed}&model=${model}&nologo=true`;
+  return `https://image.pollinations.ai/prompt/${encoded}?width=${w}&height=${h}&seed=${seed}&model=${model}&nologo=false&referrer=dragonprimordial12-netizen.github.io`;
 }
 
 function regenImage() {
@@ -727,5 +734,18 @@ const obs = new IntersectionObserver(entries => {
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 </script>
+
+<!-- POLLINATIONS BADGE + DONATE -->
+<div style="position:fixed;bottom:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;padding:0.5rem 1.2rem;background:rgba(5,3,5,0.95);border-top:1px solid rgba(255,140,0,0.1);">
+  <a href="https://pollinations.ai" target="_blank" style="display:flex;align-items:center;gap:0.5rem;text-decoration:none;font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,140,0,0.5);border:1px solid rgba(255,140,0,0.15);padding:0.3rem 0.8rem;clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%);transition:all 0.2s;">
+    🌸 Powered by Pollinations AI
+  </a>
+  <div style="display:flex;gap:0.5rem;align-items:center;">
+    <span style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.1em;color:rgba(255,140,0,0.3);">🔥 Apoya al Dragón:</span>
+    <a href="https://paypal.me/DragonPrimordial" target="_blank" style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.3rem 0.75rem;background:rgba(0,100,255,0.1);border:1px solid rgba(0,100,255,0.25);color:rgba(100,160,255,0.7);text-decoration:none;clip-path:polygon(4px 0%,100% 0%,calc(100% - 4px) 100%,0% 100%);transition:all 0.2s;">💙 PayPal</a>
+    <span style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.3rem 0.75rem;background:rgba(0,200,100,0.07);border:1px solid rgba(0,200,100,0.2);color:rgba(0,220,120,0.6);clip-path:polygon(4px 0%,100% 0%,calc(100% - 4px) 100%,0% 100%);">🟢 DeUna: 2215350861</span>
+  </div>
+</div>
+<div style="height:44px;"></div>
 </body>
 </html>
